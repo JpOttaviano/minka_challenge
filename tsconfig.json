@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node16",
+  "include": ["./src/**/*", "index.ts"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+  }
+}
