@@ -36,7 +36,7 @@ export class UserService {
     })
   }
 
-  public static async getUserByCredentials(
+  public static async validateUser(
     userName: string,
     password: string
   ): Promise<User> {

@@ -1,21 +1,44 @@
-import { POST, Path, Errors } from 'typescript-rest'
-import { generateAccessToken } from '../utils/crypto'
+import { POST, Path, GET, QueryParam, PathParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
+import { PageRequest, PageResponse } from '../types'
+import { Account } from '../models'
+import { AccountFilter, CreateAccount } from '../types/accounts'
+import { AccountService } from '../services'
 
-@Path('/auth')
-export class AuthController extends BaseController {
+@Path('/accounts')
+export class AccountsController extends BaseController {
+  @GET
+  public async list(
+    @QueryParam('pageSize') pageSize?: number,
+    @QueryParam('page') page?: number
+  ): Promise<PageResponse<Account>> {
+    const { userId } = this.getSession()
+    const searchInput: PageRequest<AccountFilter> = {
+      filters: {
+        userId,
+      },
+      page: {
+        size: pageSize,
+        page,
+      },
+    }
+
+    return await AccountService.getPaginatedAccountsByUserId(searchInput)
+  }
+
   @POST
-  public async login(body: any): Promise<{ token: string }> {
-    const { user, authorities } = body
-    if (!user || !authorities) {
-      throw new Errors.ForbiddenError('User not found')
-    }
-    const token = generateAccessToken({
-      user,
-      authorities,
-    })
-    return {
-      token,
-    }
+  public async createAccount(newAccount: CreateAccount): Promise<Account> {
+    const { userId } = this.getSession()
+    const { currencyId, initialBalance } = newAccount
+    return await AccountService.createAccount(userId, currencyId, 'PERSONAL')
+  }
+
+  @GET
+  @Path('/:accountId')
+  public async getAccountById(
+    @PathParam('accountId') accountId: string
+  ): Promise<Account | null> {
+    const { userId } = this.getSession()
+    return await AccountService.getAccountById(accountId, userId)
   }
 }

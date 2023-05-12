@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize'
 import { database } from '../db'
 
 export class User extends Model {
-  public id!: number
+  public id!: string
   public name!: string
   public roles!: string[]
   public token!: string
@@ -14,12 +14,12 @@ export class User extends Model {
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     roles: {
@@ -27,11 +27,11 @@ User.init(
       allowNull: false,
     },
     token: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },

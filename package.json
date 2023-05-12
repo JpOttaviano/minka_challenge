@@ -30,7 +30,8 @@
     "pg-hstore": "2.3.4",
     "sequelize": "6.31.1",
     "typescript": "5.0.4",
-    "typescript-rest": "3.0.4"
+    "typescript-rest": "3.0.4",
+    "uuid": "9.0.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",

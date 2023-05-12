@@ -2,9 +2,13 @@ import { DataTypes, Model } from 'sequelize'
 import { database } from '../db'
 
 export class Currency extends Model {
-  public id!: number
+  public id!: string
   public name!: string
   public symbol!: string
+  public referenceCurrencyId!: string
+  public referenceCurrency!: Currency
+  public value!: number
+  // Userid ?
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
@@ -12,17 +16,26 @@ export class Currency extends Model {
 Currency.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     symbol: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
+    },
+    referenceCurrencyId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      field: 'reference_currency_id',
+    },
+    value: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
     },
   },
   {
@@ -30,3 +43,8 @@ Currency.init(
     sequelize: database,
   }
 )
+
+Currency.belongsTo(Currency, {
+  foreignKey: 'reference_currency_id',
+  as: 'referenceCurrency',
+})
