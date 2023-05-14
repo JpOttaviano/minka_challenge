@@ -1,7 +1,10 @@
-import { NotFoundError } from 'typescript-rest/dist/server/model/errors'
+import {
+  NotFoundError,
+  UnauthorizedError,
+} from 'typescript-rest/dist/server/model/errors'
 import { User, Currency, Account, Transaction } from '../models'
 import { AccountType } from '../models/types/Accounts'
-import { CreateTransaction, PageRequest, PageResponse } from '../types'
+import { PageRequest, PageResponse } from '../types'
 import { TransactionService } from './TransactionService'
 import { AccountFilter } from '../types/accounts'
 import { SearchService } from './SearchService'
@@ -28,6 +31,18 @@ export class AccountService {
           as: 'currency',
         },
       ],
+    })
+  }
+
+  public static async getAccountByAccountIdAndUserId(
+    accountId: string,
+    userId: string
+  ): Promise<Account | null> {
+    return await Account.findOne({
+      where: {
+        id: accountId,
+        userId,
+      },
     })
   }
 
@@ -131,13 +146,20 @@ export class AccountService {
   public static async transferCurrency(
     originAccountId: string,
     destinationAccountId: string,
-    amount: number
+    amount: number,
+    userId: string
   ): Promise<Transaction> {
     const originAccount = await this.getAccountById(originAccountId)
     const destinationAccount = await this.getAccountById(destinationAccountId)
 
     if (!originAccount || !destinationAccount) {
       throw new NotFoundError('Account not found')
+    }
+
+    if (originAccount.userId !== userId) {
+      throw new UnauthorizedError(
+        'You are not authorized to perform this action'
+      )
     }
 
     const { currencyId, balance: originBalance } = originAccount

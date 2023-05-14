@@ -13,3 +13,11 @@ export type ProjectInvestment = {
   amount: number
   userId: string
 }
+
+export type InvestIntent = {
+  amount: number
+}
+
+export type ProjectFilter = {
+  userId?: string
+}

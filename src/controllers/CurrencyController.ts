@@ -1,4 +1,4 @@
-import { GET, POST, Path, QueryParam } from 'typescript-rest'
+import { GET, POST, Path, PathParam, QueryParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
 import { Currency } from '../models'
 import { CreateCurrency, PageRequest, PageResponse } from '../types'
@@ -45,7 +45,7 @@ export class CurrencyController extends BaseController {
   @GET
   @Path('/:currencyId')
   public async getCurrencyById(
-    @QueryParam('currencyId') currencyId: string
+    @PathParam('currencyId') currencyId: string
   ): Promise<Currency | null> {
     const { roles } = this.getSession()
     if (!roles.includes('MEMBER')) {

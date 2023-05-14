@@ -1,9 +1,10 @@
 import { POST, Path, GET, QueryParam, PathParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
 import { PageRequest, PageResponse } from '../types'
-import { Account } from '../models'
-import { AccountFilter, CreateAccount } from '../types/accounts'
+import { Account, Transaction } from '../models'
+import { AccountFilter, CreateAccount, CreateTransfer } from '../types/accounts'
 import { AccountService } from '../services'
+import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
 
 @Path('/accounts')
 export class AccountsController extends BaseController {
@@ -30,7 +31,29 @@ export class AccountsController extends BaseController {
   public async createAccount(newAccount: CreateAccount): Promise<Account> {
     const { userId } = this.getSession()
     const { currencyId, initialBalance } = newAccount
-    return await AccountService.createAccount(userId, currencyId, 'PERSONAL')
+    return await AccountService.createAccount(
+      userId,
+      currencyId,
+      'PERSONAL',
+      initialBalance
+    )
+  }
+
+  @POST
+  @Path('/transfer')
+  public async transfer(newTransfer: CreateTransfer): Promise<Transaction> {
+    const { userId, roles } = this.getSession()
+    if (!roles.includes('MEMBER')) {
+      throw new UnauthorizedError('Resource not available')
+    }
+
+    const { accountId, destinyAccountId, amount } = newTransfer
+    return await AccountService.transferCurrency(
+      accountId,
+      destinyAccountId,
+      amount,
+      userId
+    )
   }
 
   @GET

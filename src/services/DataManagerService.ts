@@ -72,6 +72,8 @@ export class DataManagerService {
     const { name, description, currency, userId, initialSupply } = newProject
     const { symbol } = currency
 
+    // Validate requirements for initial supply ?
+
     // Check and create new currency
     const existingCurrency = await CurrencyService.getCurrencyBySymbol(symbol)
 
@@ -177,14 +179,16 @@ export class DataManagerService {
     await AccountService.transferCurrency(
       paymentUserAccount.id,
       projectOwnerPaymentAccount.id,
-      amount * referenceValue
+      amount * referenceValue,
+      userId
     )
 
     // Exchange project currency
     const projectTransaction = await AccountService.transferCurrency(
       projectAccount.id,
       projectUsersAccount.id,
-      amount
+      amount,
+      projectAccount.userId
     )
     this.log(`Investment completed.`)
     return projectTransaction
