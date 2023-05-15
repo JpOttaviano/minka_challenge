@@ -1,13 +1,11 @@
-import { GET, POST, Path, PathParam, QueryParam } from 'typescript-rest'
+import { GET, POST, Path, QueryParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
 import {
-  CreateTransaction,
   PageRequest,
   PageResponse,
   TransactionFilter,
   TransactionResponse,
 } from '../types'
-import { Transaction } from '../models'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
 import { TransactionService } from '../services'
 import { parseQueryDate } from '../utils/dates'

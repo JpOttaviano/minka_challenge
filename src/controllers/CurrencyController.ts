@@ -1,6 +1,5 @@
 import { GET, POST, Path, PathParam, QueryParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
-import { Currency } from '../models'
 import {
   CreateCurrency,
   CurrencyResponse,

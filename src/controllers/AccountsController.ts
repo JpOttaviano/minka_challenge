@@ -1,16 +1,14 @@
 import { POST, Path, GET, QueryParam, PathParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
 import { PageRequest, PageResponse, TransactionResponse } from '../types'
-import { Account, Transaction } from '../models'
 import {
   AccountFilter,
   AccountResponse,
   CreateAccount,
   CreateTransfer,
 } from '../types/accounts'
-import { AccountService } from '../services'
+import { AccountService, DataManagerService } from '../services'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
-import { DataManagerService } from '../services/DataManagerService'
 import { mapAccountResponse } from './mappers/accounts'
 import { mapTransactionResponse } from './mappers/transactions'
 

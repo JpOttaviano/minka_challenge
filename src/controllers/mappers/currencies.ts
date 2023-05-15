@@ -9,6 +9,8 @@ export function mapCurrencyResponse(currency: Currency): CurrencyResponse {
     name,
     symbol,
     value,
-    ...(referenceCurrency && { referenceCurrency }),
+    ...(referenceCurrency && {
+      referenceCurrency: mapCurrencyResponse(referenceCurrency),
+    }),
   }
 }

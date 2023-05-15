@@ -1,9 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
+  verbose: true,
   testEnvironment: 'node',
-  transform: {
-    '^.+\\.ts?$': 'ts-jest',
-  },
   testRegex: './tests/integration/.*.test.ts$',
-  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  setupFilesAfterEnv: ['./tests/setup/index.ts'],
+  reporters: [ "default", "jest-junit" ]
 };

@@ -1,7 +1,6 @@
-import { POST, Path, Errors, GET, QueryParam, PathParam } from 'typescript-rest'
+import { POST, Path, GET, QueryParam, PathParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
-import { Project, Transaction } from '../models'
-import { ProjectService } from '../services'
+import { ProjectService, DataManagerService } from '../services'
 import {
   PageResponse,
   PageRequest,
@@ -12,7 +11,6 @@ import {
   TransactionResponse,
 } from '../types'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
-import { DataManagerService } from '../services/DataManagerService'
 import { mapProjectResponse } from './mappers/projects'
 import { mapTransactionResponse } from './mappers/transactions'
 
