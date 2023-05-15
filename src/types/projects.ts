@@ -1,3 +1,4 @@
+import { AccountResponse } from './accounts'
 import { CreateCurrency } from './currency'
 
 export type CreateProject = {
@@ -20,4 +21,11 @@ export type InvestIntent = {
 
 export type ProjectFilter = {
   userId?: string
+}
+
+export type ProjectResponse = {
+  id: string
+  name: string
+  description: string
+  account: AccountResponse
 }

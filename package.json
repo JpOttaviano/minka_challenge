@@ -7,7 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier-fix": "prettier --write \"**/*.ts\"",
     "lint": "npm run prettier-fix && eslint . --ext .ts",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "start": "nodemon ./src/server/index.ts",
+    "docker:start": "cross-env NODE_ENV=test nodemon index.ts",
+    "db:create": "cd ./src/db && npx sequelize-cli db:create && cd ../..",
+    "db:migrate": "cd ./src/db && npx sequelize-cli db:migrate && cd ../..",
+    "db:seed": "cd ./src/db && npx sequelize-cli db:seed:all && cd ../..",
+    "db:create:all": "npm run db:migrate && npm run db:seed",
+    "docker:start:dev": "docker-compose up -d && docker exec -it minka-api bash",
+    "script:password": "ts-node ./scripts/password/generate.ts"
   },
   "repository": {
     "type": "git",

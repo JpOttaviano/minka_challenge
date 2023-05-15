@@ -6,7 +6,6 @@ export class User extends Model {
   public name!: string
   public roles!: string[]
   public token!: string
-  public email!: string
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
@@ -27,10 +26,6 @@ User.init(
       allowNull: false,
     },
     token: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    email: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

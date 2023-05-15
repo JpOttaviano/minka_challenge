@@ -5,11 +5,13 @@ import {
   PageRequest,
   PageResponse,
   TransactionFilter,
+  TransactionResponse,
 } from '../types'
 import { Transaction } from '../models'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
 import { TransactionService } from '../services'
 import { parseQueryDate } from '../utils/dates'
+import { mapTransactionResponse } from './mappers/transactions'
 
 @Path('/transactions')
 export class TransactionsController extends BaseController {
@@ -26,7 +28,7 @@ export class TransactionsController extends BaseController {
     @QueryParam('to') to?: string,
     @QueryParam('pageSize') pageSize?: number,
     @QueryParam('page') page?: number
-  ): Promise<PageResponse<Transaction>> {
+  ): Promise<PageResponse<TransactionResponse>> {
     const { userId, roles } = this.getSession()
 
     if (!roles.includes('MEMBER')) {
@@ -46,6 +48,14 @@ export class TransactionsController extends BaseController {
       },
     }
 
-    return await TransactionService.getPaginatedAccountTransactions(searchInput)
+    const paginatedResult =
+      await TransactionService.getPaginatedAccountTransactions(searchInput)
+    const { results } = paginatedResult
+    return {
+      ...paginatedResult,
+      results: results.map((transaction) =>
+        mapTransactionResponse(transaction)
+      ),
+    }
   }
 }

@@ -23,10 +23,6 @@ export class AccountService {
       where: whereClause,
       include: [
         {
-          model: User,
-          as: 'user',
-        },
-        {
           model: Currency,
           as: 'currency',
         },
@@ -52,10 +48,6 @@ export class AccountService {
         userId,
       },
       include: [
-        {
-          model: User,
-          as: 'user',
-        },
         {
           model: Currency,
           as: 'currency',
@@ -101,10 +93,6 @@ export class AccountService {
         currencyId,
       },
       include: [
-        {
-          model: User,
-          as: 'user',
-        },
         {
           model: Currency,
           as: 'currency',

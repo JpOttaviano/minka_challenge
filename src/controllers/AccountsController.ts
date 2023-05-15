@@ -1,10 +1,18 @@
 import { POST, Path, GET, QueryParam, PathParam } from 'typescript-rest'
 import { BaseController } from './BaseController'
-import { PageRequest, PageResponse } from '../types'
+import { PageRequest, PageResponse, TransactionResponse } from '../types'
 import { Account, Transaction } from '../models'
-import { AccountFilter, CreateAccount, CreateTransfer } from '../types/accounts'
+import {
+  AccountFilter,
+  AccountResponse,
+  CreateAccount,
+  CreateTransfer,
+} from '../types/accounts'
 import { AccountService } from '../services'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
+import { DataManagerService } from '../services/DataManagerService'
+import { mapAccountResponse } from './mappers/accounts'
+import { mapTransactionResponse } from './mappers/transactions'
 
 @Path('/accounts')
 export class AccountsController extends BaseController {
@@ -12,7 +20,7 @@ export class AccountsController extends BaseController {
   public async list(
     @QueryParam('pageSize') pageSize?: number,
     @QueryParam('page') page?: number
-  ): Promise<PageResponse<Account>> {
+  ): Promise<PageResponse<AccountResponse>> {
     const { userId } = this.getSession()
     const searchInput: PageRequest<AccountFilter> = {
       filters: {
@@ -24,44 +32,56 @@ export class AccountsController extends BaseController {
       },
     }
 
-    return await AccountService.getPaginatedAccountsByUserId(searchInput)
+    const pageResponse = await AccountService.getPaginatedAccountsByUserId(
+      searchInput
+    )
+    const { results } = pageResponse
+    return {
+      ...pageResponse,
+      results: results.map((account) => mapAccountResponse(account)),
+    }
   }
 
   @POST
-  public async createAccount(newAccount: CreateAccount): Promise<Account> {
+  public async createAccount(
+    newAccount: CreateAccount
+  ): Promise<AccountResponse> {
     const { userId } = this.getSession()
-    const { currencyId, initialBalance } = newAccount
-    return await AccountService.createAccount(
-      userId,
-      currencyId,
-      'PERSONAL',
-      initialBalance
+    const account = await DataManagerService.createNewAccount(
+      newAccount,
+      userId
     )
+    return mapAccountResponse(account)
   }
 
   @POST
   @Path('/transfer')
-  public async transfer(newTransfer: CreateTransfer): Promise<Transaction> {
+  public async transfer(
+    newTransfer: CreateTransfer
+  ): Promise<TransactionResponse> {
     const { userId, roles } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
     }
 
     const { accountId, destinyAccountId, amount } = newTransfer
-    return await AccountService.transferCurrency(
+    const treansaction = await AccountService.transferCurrency(
       accountId,
       destinyAccountId,
       amount,
       userId
     )
+
+    return mapTransactionResponse(treansaction)
   }
 
   @GET
   @Path('/:accountId')
   public async getAccountById(
     @PathParam('accountId') accountId: string
-  ): Promise<Account | null> {
+  ): Promise<AccountResponse | null> {
     const { userId } = this.getSession()
-    return await AccountService.getAccountById(accountId, userId)
+    const account = await AccountService.getAccountById(accountId, userId)
+    return account ? mapAccountResponse(account) : null
   }
 }

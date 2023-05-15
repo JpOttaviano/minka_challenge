@@ -8,9 +8,13 @@ import {
   CreateProject,
   ProjectInvestment,
   InvestIntent,
+  ProjectResponse,
+  TransactionResponse,
 } from '../types'
 import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
 import { DataManagerService } from '../services/DataManagerService'
+import { mapProjectResponse } from './mappers/projects'
+import { mapTransactionResponse } from './mappers/transactions'
 
 @Path('/projects')
 export class ProjectsController extends BaseController {
@@ -24,7 +28,7 @@ export class ProjectsController extends BaseController {
   public async listProjects(
     @QueryParam('pageSize') pageSize?: number,
     @QueryParam('page') page?: number
-  ): Promise<PageResponse<Project>> {
+  ): Promise<PageResponse<ProjectResponse>> {
     const { roles } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
@@ -37,7 +41,14 @@ export class ProjectsController extends BaseController {
         page,
       },
     }
-    return await ProjectService.getPaginatedProjectsByUserId(searchInput)
+    const paginatedResponse = await ProjectService.getPaginatedProjectsByUserId(
+      searchInput
+    )
+    const { results } = paginatedResponse
+    return {
+      ...paginatedResponse,
+      results: results.map((project) => mapProjectResponse(project)),
+    }
   }
 
   /**
@@ -46,13 +57,16 @@ export class ProjectsController extends BaseController {
    * @returns
    */
   @POST
-  public async createProject(newProject: CreateProject): Promise<Project> {
+  public async createProject(
+    newProject: CreateProject
+  ): Promise<ProjectResponse> {
     const { roles } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
     }
 
-    return await DataManagerService.createNewProject(newProject)
+    const project = await DataManagerService.createNewProject(newProject)
+    return mapProjectResponse(project)
   }
 
   /**
@@ -68,7 +82,7 @@ export class ProjectsController extends BaseController {
     @PathParam('userId') userId: string,
     @QueryParam('pageSize') pageSize?: number,
     @QueryParam('page') page?: number
-  ): Promise<PageResponse<Project>> {
+  ): Promise<PageResponse<ProjectResponse>> {
     const { roles } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
@@ -83,7 +97,14 @@ export class ProjectsController extends BaseController {
         page,
       },
     }
-    return await ProjectService.getPaginatedProjectsByUserId(searchInput)
+    const paginatedResponse = await ProjectService.getPaginatedProjectsByUserId(
+      searchInput
+    )
+    const { results } = paginatedResponse
+    return {
+      ...paginatedResponse,
+      results: results.map((project) => mapProjectResponse(project)),
+    }
   }
 
   /**
@@ -95,13 +116,17 @@ export class ProjectsController extends BaseController {
   @Path('/:projectId')
   public async getProjectById(
     @PathParam('projectId') projectId: string
-  ): Promise<Project | null> {
+  ): Promise<ProjectResponse | null> {
     const { roles } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
     }
 
-    return await ProjectService.getProjectById(projectId)
+    const project = await ProjectService.getProjectById(projectId)
+    if (!project) {
+      return null
+    }
+    return mapProjectResponse(project)
   }
 
   /**
@@ -115,7 +140,7 @@ export class ProjectsController extends BaseController {
   public async investInProject(
     @PathParam('projectId') projectId: string,
     body: InvestIntent
-  ): Promise<Transaction> {
+  ): Promise<TransactionResponse> {
     const { roles, userId } = this.getSession()
     const { amount } = body
     if (!roles.includes('MEMBER')) {
@@ -128,6 +153,7 @@ export class ProjectsController extends BaseController {
       amount,
     }
 
-    return await DataManagerService.investInProject(investment)
+    const transaction = await DataManagerService.investInProject(investment)
+    return mapTransactionResponse(transaction)
   }
 }

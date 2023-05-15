@@ -7,7 +7,7 @@ module.exports = {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4
+        defaultValue: Sequelize.literal('uuid_generate_v4()')
       },
       name: {
         type: Sequelize.STRING,
@@ -22,6 +22,10 @@ module.exports = {
       },
       value: {
         type: Sequelize.FLOAT,
+      },
+      user_id: {
+        type: Sequelize.UUID,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,

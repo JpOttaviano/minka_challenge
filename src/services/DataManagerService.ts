@@ -12,7 +12,8 @@ export class DataManagerService {
   }
 
   public static async createNewCurrency(
-    newCurrency: CreateCurrency
+    newCurrency: CreateCurrency,
+    userId: string
   ): Promise<Currency> {
     const { name, symbol, referenceCurrencyId, value } = newCurrency
 
@@ -30,6 +31,7 @@ export class DataManagerService {
     return await CurrencyService.createCurrency(
       name,
       symbol,
+      userId,
       referenceCurrencyId,
       value
     )
@@ -51,9 +53,7 @@ export class DataManagerService {
       await AccountService.getAccountByUserIdAndCurrencyId(userId, currencyId)
 
     if (!!existingAccount) {
-      console.info(
-        `The specified user already has an account for that currency.`
-      )
+      this.log(`The specified user already has an account for that currency.`)
       return existingAccount
     }
 
@@ -81,7 +81,7 @@ export class DataManagerService {
       throw new Error(`Currency ${symbol} already exists`)
     }
 
-    const newCurrency = await this.createNewCurrency(currency)
+    const newCurrency = await this.createNewCurrency(currency, userId)
 
     // Create new account of new currency
     const newAccount = await this.createNewAccount(

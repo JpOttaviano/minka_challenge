@@ -13,6 +13,7 @@ import { apiConfig } from '../config'
 const { JWT_SECRET } = apiConfig
 
 export function getApp(): Application {
+  console.log('Starting server...')
   const app: Application = express()
   app.use(bodyParserUrl())
   app.use(cors())
@@ -25,7 +26,7 @@ export function getApp(): Application {
       secret: JWT_SECRET,
       requestProperty: 'decoded',
       algorithms: ['HS256'],
-    }).unless({ path: ['/auth'] })
+    }).unless({ path: ['/auth', '/auth/register'] })
   )
 
   Object.values(Controllers).map((controller) => {
@@ -37,6 +38,8 @@ export function getApp(): Application {
       res.status(401).send('User Not Found...')
     } else if (err.name === 'ForbiddenError') {
       res.status(403).send('Forbidden...')
+    } else if (err.code === 500) {
+      res.status(400).send('Error processing request...')
     } else {
       next(err)
     }

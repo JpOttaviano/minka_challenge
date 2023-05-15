@@ -8,6 +8,7 @@ export class Currency extends Model {
   public referenceCurrencyId!: string
   public referenceCurrency!: Currency
   public value!: number
+  public userId!: string
   // Userid ?
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -37,6 +38,11 @@ Currency.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      field: 'user_id',
+    },
   },
   {
     tableName: 'currencies',
@@ -47,4 +53,9 @@ Currency.init(
 Currency.belongsTo(Currency, {
   foreignKey: 'reference_currency_id',
   as: 'referenceCurrency',
+})
+
+Currency.belongsTo(Currency, {
+  foreignKey: 'user_id',
+  as: 'user',
 })

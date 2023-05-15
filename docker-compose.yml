@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: minka-db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    # Not persisted
+    # volumes:
+    #   - postgres-data:/var/lib/postgresql/data
+    networks:
+      - minka-api
+    expose:
+      - 5432
+    env_file:
+      - .env
+    ports:
+      - ${DB_PORT}:5432
+
+  app:
+    container_name: minka-api
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - minka-api
+    env_file:
+      - .env
+    volumes:
+      - .:/share
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+
+networks:
+  minka-api:
+
+volumes:
+  postgres-data:

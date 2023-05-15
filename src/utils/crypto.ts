@@ -13,7 +13,8 @@ export function generateAccessToken(data: Record<string, unknown>): string {
 }
 
 export function encrypt(text: string): string {
-  if (ENCRYPTION_KEY) {
+  console.log('ENCRYPTION_KEY', ENCRYPTION_KEY)
+  if (!ENCRYPTION_KEY) {
     throw new Error(
       "Can't encrypt key, missing or empty ENCRIPTION_KEY env var"
     )
@@ -31,7 +32,7 @@ export function encrypt(text: string): string {
 }
 
 export function decrypt(text: string): string {
-  if (ENCRYPTION_KEY) {
+  if (!ENCRYPTION_KEY) {
     throw new Error(
       "Can't encrypt key, missing or empty ENCRIPTION_KEY env var"
     )

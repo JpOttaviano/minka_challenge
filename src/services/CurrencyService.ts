@@ -10,6 +10,12 @@ export class CurrencyService {
       where: {
         id: currencyId,
       },
+      include: [
+        {
+          model: Currency,
+          as: 'referenceCurrency',
+        },
+      ],
     })
   }
 
@@ -41,6 +47,7 @@ export class CurrencyService {
   public static async createCurrency(
     name: string,
     symbol: string,
+    userId: string,
     referenceCurrencyId?: string,
     value?: number
   ): Promise<Currency> {
@@ -54,6 +61,7 @@ export class CurrencyService {
     return await Currency.create({
       name,
       symbol,
+      userId,
       referenceCurrencyId,
       value,
     })

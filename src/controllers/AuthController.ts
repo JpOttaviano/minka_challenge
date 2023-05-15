@@ -7,12 +7,12 @@ import { UserService } from '../services'
 export class AuthController extends BaseController {
   @POST
   public async login(body: any): Promise<{ token: string }> {
-    const { userId, password } = body
-    if (!userId || !password) {
+    const { userName, password } = body
+    if (!userName || !password) {
       throw new Errors.ForbiddenError('Missing Credentials')
     }
-    const validatedUser = await UserService.validateUser(userId, password)
-    const { roles } = validatedUser
+    const validatedUser = await UserService.validateUser(userName, password)
+    const { roles, id: userId } = validatedUser
     const token = generateAccessToken({
       userId,
       roles,
@@ -25,14 +25,14 @@ export class AuthController extends BaseController {
   @POST
   @Path('/register')
   public async register(body: any): Promise<{ token: string }> {
-    const { userId, password } = body
-    if (!userId || !password) {
+    const { userName, password } = body
+    if (!userName || !password) {
       throw new Errors.ForbiddenError('Missing Credentials')
     }
-    const createdUser = await UserService.createUser(userId, password, [
+    const createdUser = await UserService.createUser(userName, password, [
       'MEMBER',
     ])
-    const { roles: createdUserRoles } = createdUser
+    const { roles: createdUserRoles, id: userId } = createdUser
     const token = generateAccessToken({
       userId,
       roles: createdUserRoles,
