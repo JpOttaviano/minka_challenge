@@ -44,9 +44,17 @@ export class AccountsController extends BaseController {
   public async createAccount(
     newAccount: CreateAccount
   ): Promise<AccountResponse> {
-    const { userId } = this.getSession()
+    const { userId, roles } = this.getSession()
+    if (!roles.includes('MEMBER') || !roles.includes('DOMAIN_OWNER')) {
+      throw new UnauthorizedError('Resource not available')
+    }
     const account = await DataManagerService.createNewAccount(
-      newAccount,
+      {
+        ...newAccount,
+        initialBalance: roles.includes('DOMAIN_OWNER')
+          ? newAccount.initialBalance
+          : 0,
+      },
       userId
     )
     return mapAccountResponse(account)

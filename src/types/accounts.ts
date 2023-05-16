@@ -18,8 +18,9 @@ export type CreateTransfer = {
 
 export type AccountResponse = {
   id: string
-  currency: CurrencyResponse
   balance: number
   type: string
   userId: string
+  currencyId?: string
+  currency?: CurrencyResponse
 }

@@ -30,4 +30,7 @@ export const apiConfig = cleanEnv(process.env, {
   ENCRYPTION_KEY: str({
     desc: 'Encryption key',
   }),
+  PORT: str({
+    desc: 'API port',
+  }),
 })

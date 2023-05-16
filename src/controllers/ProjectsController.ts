@@ -58,12 +58,15 @@ export class ProjectsController extends BaseController {
   public async createProject(
     newProject: CreateProject
   ): Promise<ProjectResponse> {
-    const { roles } = this.getSession()
+    const { roles, userId } = this.getSession()
     if (!roles.includes('MEMBER')) {
       throw new UnauthorizedError('Resource not available')
     }
 
-    const project = await DataManagerService.createNewProject(newProject)
+    const project = await DataManagerService.createNewProject(
+      newProject,
+      userId
+    )
     return mapProjectResponse(project)
   }
 

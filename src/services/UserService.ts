@@ -36,6 +36,16 @@ export class UserService {
     })
   }
 
+  public static async deleteUser(userName: string): Promise<void> {
+    const matchingUser = await this.getUserByUserName(userName)
+
+    if (!matchingUser) {
+      throw new NotFoundError('Invalid credentials')
+    }
+
+    await matchingUser.destroy()
+  }
+
   public static async validateUser(
     userName: string,
     password: string

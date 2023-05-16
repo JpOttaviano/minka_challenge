@@ -4,7 +4,6 @@ import { CreateCurrency } from './currency'
 export type CreateProject = {
   name: string
   description: string
-  userId: string
   currency: CreateCurrency
   initialSupply: number
 }
@@ -27,5 +26,6 @@ export type ProjectResponse = {
   id: string
   name: string
   description: string
-  account: AccountResponse
+  account?: AccountResponse
+  accountId?: string
 }

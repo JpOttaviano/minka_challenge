@@ -33,11 +33,6 @@ export class ProjectService {
     const { userId } = filters
 
     const { count, rows } = await Project.findAndCountAll({
-      ...(userId && {
-        where: {
-          userId,
-        },
-      }),
       order: [['createdAt', 'DESC']],
       limit: pageSize,
       offset: SearchService.getOffset(page),
@@ -45,6 +40,11 @@ export class ProjectService {
         {
           model: Account,
           as: 'account',
+          ...(userId && {
+            where: {
+              userId,
+            },
+          }),
           include: [
             {
               model: Currency,

@@ -17,6 +17,7 @@ To install all necesary dependencies.
 
 
 ## Docker install and run
+###(Recommended)
 
 To start the server in a dockerized container, first be sure to have docker installed and running in your environment.
 then simply run
@@ -37,22 +38,50 @@ npm run start:dev
 to start the server and start listening for requests.
 You can also run 
 ```
+npm run db:create:all:tests
 npm run test
 ```
-to run all the tests on the recently started application.
+to create the tests database and run all tests.
 
 ## Non-docker install and run
 
-Basically the same, but without starting a docker container
+If you dont want or do not have docker installed, you can run the project locally in the same way.
+Basically the same, but without starting a docker container.
 ```
 npm run db:create:all
 npm run start:dev
 ```
 or
 ```
+npm run db:create:all:tests
 npm run tests
 ```
 
+## Tests
+
+To run tests, be sure to run
+```
+npm run db:create:all:tests
+```
+to set up the test database. Then simply run
+```
+npm run test
+```
+
+There is also a postamn request collection to fully test and use the service under
+./requests/ZEF_Requests_postmancollection.json
+
+### Database config
+Both .env files and sequelize ./src/db/config/config.json database HOST are setted for the Docker container environment.
+If you want to run locally, simply change the paramenters to
+```
+DB_HOST=localhost
+```
+and 
+```
+"host"="localhost"
+```
+in each file. 
 ### Caveats
 
 In case the database create all commands fails, there is the possibility to run the creation, migration and seed in separate singular commands like

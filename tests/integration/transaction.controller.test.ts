@@ -71,9 +71,9 @@ describe('Transactions Controller', () => {
         .send()
 
       const { results } = body
-      expect(results.length).toBeGreaterThan(4)
+      expect(results.length).toBe(4)
       expect(results[0]).toHaveProperty('id')
-      expect(results[0]).toHaveProperty('originAccountId')
+      expect(results[0]).toHaveProperty('accountId')
       expect(results[0]).toHaveProperty('destinyAccountId')
       expect(results[0]).toHaveProperty('amount')
       expect(results[0]).toHaveProperty('date')

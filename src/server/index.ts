@@ -34,12 +34,10 @@ export function getApp(): Application {
   })
 
   app.use(function (err: any, _req: any, res: any, next: NextFunction) {
-    if (err.name === 'UnauthorizedError') {
-      res.status(401).send('User Not Found...')
-    } else if (err.name === 'ForbiddenError') {
-      res.status(403).send('Forbidden...')
-    } else if (err.code === 500) {
-      res.status(400).send('Error processing request...')
+    if (err.message) {
+      res.status(400).send({
+        error: err.message,
+      })
     } else {
       next(err)
     }

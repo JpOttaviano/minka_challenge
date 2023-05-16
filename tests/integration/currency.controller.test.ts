@@ -63,5 +63,24 @@ describe('Currencies Controller', () => {
       expect(dbCurrency.value).toBe(5)
       expect(dbCurrency.referenceCurrencyId).toBe(currencyId)
     })
+
+    it('Should return error if currency symbol already exists', async () => {
+      await DataManagerService.createNewCurrency(
+        {
+          name: 'TestCurerency',
+          symbol: 'SCR',
+          value: 0.5,
+        },
+        DOMAIN_OWNER_ID
+      )
+      const { body } = await request().post(`/currencies`).send({
+        name: 'SentCurrency',
+        symbol: 'SCR',
+        value: 5,
+        referenceCurrencyId: currencyId,
+      })
+
+      expect(body.error).toBe('Currency SCR already exists')
+    })
   })
 })

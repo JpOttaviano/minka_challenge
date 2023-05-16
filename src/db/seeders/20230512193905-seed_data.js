@@ -3,6 +3,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
    // Insert domain owner user
+    // password: ownerPassword
     const TOKEN = 'ca228d8c8424c9e90d0aba56dedbc5f6:ced82ba563bfd5a438fb91bcb042a475'
     const OWNER_ID = '36c12be9-1a51-4f66-8c4c-1ca18a691710'
     const HRK_ID = '0aa1736d-116b-4498-a801-6cfbf90a54f1'
@@ -21,14 +22,16 @@ module.exports = {
         name: 'Croatian Kuna',
         symbol: 'HRK',
         reference_currency_id: HRK_ID,
-        value: 1
+        value: 1,
+        user_id: OWNER_ID
       },
       {
         id: ZKN_ID,
         name: 'ZEF Kuna',
         symbol: 'ZKN',
         reference_currency_id: HRK_ID,
-        value: 1
+        value: 1,
+        user_id: OWNER_ID
       }
     ])
 

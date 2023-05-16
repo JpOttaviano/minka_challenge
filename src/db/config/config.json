@@ -10,15 +10,8 @@
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "minka",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "minka",
-    "host": "127.0.0.1",
+    "database": "minka_test",
+    "host": "db",
     "dialect": "postgres"
   }
 }

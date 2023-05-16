@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "255b66e3-0dc3-40cb-b8c6-bb47f3a50105",
+		"name": "ZEF_Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8141651"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{ADMIN_USER}}\",\r\n    \"password\": \"{{ADMIN_PASSWORD}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"someUser\",\r\n    \"password\": \"somePassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Currencies",
+			"item": [
+				{
+					"name": "List all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/currencies?page=1&pageSize=20",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"currencies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test Currency\",\r\n    \"symbol\": \"TCR\",\r\n    \"value\": 1,\r\n    \"referenceCurrencyId\": \"518f47d9-5d1d-44c8-ad71-b6d7dfc5d65a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/currencies",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/currencies/24215c87-83f9-4d04-a125-9e45743b34fa",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"currencies",
+								"24215c87-83f9-4d04-a125-9e45743b34fa"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Accounts",
+			"item": [
+				{
+					"name": "List by UserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/accounts?page=1&pageSize=20",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/accounts/61b82ba9-fb6d-487a-8511-4324e0b8c73c",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"accounts",
+								"61b82ba9-fb6d-487a-8511-4324e0b8c73c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currencyId\": \"518f47d9-5d1d-44c8-ad71-b6d7dfc5d65a\",\r\n    \"initialBalance\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/accounts",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountId\": \"1a6d2435-b0c4-499f-af74-4a1f62cbe81b\",\r\n    \"destinyAccountId\": \"71006e1a-6901-45a9-a42a-9a49d99a9984\",\r\n    \"amount\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/accounts/transfer",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"accounts",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Projects",
+			"item": [
+				{
+					"name": "List all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/projects?page=1&pageSize=20",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ZEF Investment\",\r\n    \"description\": \"Investment to fund ZEF  platform\",\r\n    \"currency\": {\r\n        \"name\": \" ZEF Investment Currency\",\r\n        \"symbol\": \"ZIC\",\r\n        \"value\": 1,\r\n        \"referenceCurrencyId\": \"518f47d9-5d1d-44c8-ad71-b6d7dfc5d65a\"\r\n    },\r\n    \"initialSupply\": 10000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/projects",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List projects by user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/projects/users/36c12be9-1a51-4f66-8c4c-1ca18a691710?page=1&pageSize=20",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"projects",
+								"users",
+								"36c12be9-1a51-4f66-8c4c-1ca18a691710"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/projects/{project_id}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"projects",
+								"{project_id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYWJlNmJiMy00YmFlLTQyMzAtOGE5Zi02NzcwZWU3NGIxYzMiLCJyb2xlcyI6WyJNRU1CRVIiXSwiaWF0IjoxNjg0MTkxMTA5LCJleHAiOjE2ODQxOTI5MDl9.v_6H-qKV33zp1Jue3G5DPolYzqNsKCXnbphK4osEKXc",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/projects/256e456c-3229-4bc4-8f7b-8ed5d4ea42e4/invest",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"projects",
+								"256e456c-3229-4bc4-8f7b-8ed5d4ea42e4",
+								"invest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Transactions",
+			"item": [
+				{
+					"name": "Get by accountId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{API_KEY}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const host = pm.collectionVariables.get(\"HOST\");",
+					"const user = pm.collectionVariables.get(\"ADMIN_USER\");",
+					"const password = pm.collectionVariables.get(\"ADMIN_PASSWORD\");",
+					"",
+					"pm.sendRequest(",
+					"    { ",
+					"        url: `${host}/auth`,",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Content-Type': 'application/json'",
+					"        },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({ \"userName\": user, \"password\": password })",
+					"        }",
+					"    }, ",
+					"    function (err, response) {",
+					"        const json = response.json();",
+					"        console.log(\"Token Generated: \", json)",
+					"        pm.collectionVariables.set(\"API_KEY\", json.token);",
+					"    }",
+					");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "localhost:9090",
+			"type": "string"
+		},
+		{
+			"key": "ADMIN_USER",
+			"value": "DomainOwner",
+			"type": "string"
+		},
+		{
+			"key": "ADMIN_PASSWORD",
+			"value": "ownerPassword",
+			"type": "string"
+		},
+		{
+			"key": "API_KEY",
+			"value": ""
+		}
+	]
+}

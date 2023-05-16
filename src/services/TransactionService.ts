@@ -25,7 +25,7 @@ export class TransactionService {
     const { userId, accountId, from, to } = filters
 
     if (!accountId) {
-      throw new NotFoundError('Bad Request: accountId is required')
+      throw new NotFoundError('AccountId is required')
     }
 
     const matchingAccount = await AccountService.getAccountByAccountIdAndUserId(
@@ -34,11 +34,11 @@ export class TransactionService {
     )
 
     if (!matchingAccount) {
-      throw new NotFoundError('Bad Request: accountId not found')
+      throw new NotFoundError('Account not found')
     }
 
     const where: any = {
-      accountId,
+      [Op.or]: [{ accountId }, { destinyAccountId: accountId }],
     }
 
     if (from || to) {

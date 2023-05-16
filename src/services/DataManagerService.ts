@@ -67,9 +67,10 @@ export class DataManagerService {
 
   // Creates new Currency, Account and Project
   public static async createNewProject(
-    newProject: CreateProject
+    newProject: CreateProject,
+    userId: string
   ): Promise<Project> {
-    const { name, description, currency, userId, initialSupply } = newProject
+    const { name, description, currency, initialSupply } = newProject
     const { symbol } = currency
 
     // Validate requirements for initial supply ?
@@ -92,6 +93,18 @@ export class DataManagerService {
       userId,
       'PROJECT'
     )
+
+    // Add payment account for project owner if necessary
+    if (!!currency.referenceCurrencyId) {
+      await this.createNewAccount(
+        {
+          currencyId: currency.referenceCurrencyId,
+          initialBalance: 0,
+        },
+        userId,
+        'PERSONAL'
+      )
+    }
 
     // Create new project
     return await ProjectService.createProject(name, description, newAccount.id)

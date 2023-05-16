@@ -19,10 +19,14 @@ async function clearDb(): Promise<number[]> {
   return await Promise.all(modelstoClearPromise)
 }
 
-jest.setTimeout(30000)
+jest.setTimeout(10000)
 
 beforeEach(async () => {
   // Doesn't clear implementations, only spys
   jest.clearAllMocks()
+  return await clearDb()
+})
+
+afterAll(async () => {
   return await clearDb()
 })
