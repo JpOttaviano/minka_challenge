@@ -68,6 +68,9 @@ to set up the test database. Then simply run
 ```
 npm run test
 ```
+After the seed data is saved in the db, there will be a single admin user for use with 'DOWMAIN_OWNER' role assigned;
+username: DomainOwner
+password: ownerPassword
 
 There is also a postamn request collection to fully test and use the service under
 ./requests/ZEF_Requests_postmancollection.json
