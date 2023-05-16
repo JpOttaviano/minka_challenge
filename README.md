@@ -18,7 +18,7 @@ To install all necesary dependencies.
 
 
 ## Docker install and run
-###(Recommended)
+(Recommended)
 
 To start the server in a dockerized container, first be sure to have docker installed and running in your environment.
 then simply run
