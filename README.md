@@ -5,7 +5,8 @@ https://gist.github.com/zrumenjak/dfbd960482918a5ac0edf65c7453a14a
 
 ## Summary
 
-This project is a Node.Js express application with a sequelize generated model db. The needs to start both the database with both the migrations and seed data as well as the express server to listen to requests.
+This project is a Node.Js express application with a sequelize generated model db. 
+To start de the service, you need to start both the database with migrations and seed data as well as the express server to listen to requests.
 
 The application can be started in the current envrionment or in a dockerized container, whichever you preffer.
 
