@@ -19,7 +19,10 @@ export class AccountsController extends BaseController {
     @QueryParam('pageSize') pageSize?: number,
     @QueryParam('page') page?: number
   ): Promise<PageResponse<AccountResponse>> {
-    const { userId } = this.getSession()
+    const { userId, roles } = this.getSession()
+    if (!roles.includes('MEMBER') || !roles.includes('DOMAIN_OWNER')) {
+      throw new UnauthorizedError('Resource not available')
+    }
     const searchInput: PageRequest<AccountFilter> = {
       filters: {
         userId,

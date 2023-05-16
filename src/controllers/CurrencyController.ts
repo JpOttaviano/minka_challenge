@@ -16,7 +16,7 @@ export class CurrencyController extends BaseController {
   public async createCurrency(body: CreateCurrency): Promise<CurrencyResponse> {
     const { userId, roles } = this.getSession()
     if (!roles.includes('DOMAIN_OWNER')) {
-      throw new UnauthorizedError('Only domain owners can create currencies')
+      throw new UnauthorizedError('Only domain owner can create currencies')
     }
     const { name, symbol, referenceCurrencyId, value } = body
     const currency = await CurrencyService.createCurrency(
