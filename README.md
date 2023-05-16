@@ -71,6 +71,16 @@ npm run test
 There is also a postamn request collection to fully test and use the service under
 ./requests/ZEF_Requests_postmancollection.json
 
+## Usser stories <-> Requests
+| As a             | I want to                            | Request                                       |
+| -----------------| ------------------------------------ | --------------------------------------------- |
+| � Domain owner   | create a new  currency	              | POST /currencies                              |
+| � Domain owner   | issue currency	                      | POST /account/transfer                        |
+| � Member         | create an account                    | POST /account/create                          |
+| � Member         | see my account balance               | GET /accounts                                 |
+| � Member         | exchange currency                    | POST /project/:projectId/invest               |
+| � Member         | create a new currency                | POST /projects                                |
+| � Member         | return currency to Domain owner      | POST /account/transfer
 ### Database config
 Both .env files and sequelize ./src/db/config/config.json database HOST are setted for the Docker container environment.
 If you want to run locally, simply change the paramenters to
