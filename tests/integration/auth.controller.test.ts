@@ -1,8 +1,7 @@
-import { User } from '../../src/models'
 import { UserService } from '../../src/services'
 import request from '../setup/server'
 
-describe('Transactions Controller', () => {
+describe('Auth Controller', () => {
   describe('POST /auth', () => {
     it('should validate user credentials', async () => {
       const { body } = await request().post(`/auth`).send({
